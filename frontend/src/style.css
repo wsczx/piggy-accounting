@@ -1,0 +1,286 @@
+@import "tailwindcss";
+
+/* ===== CSS 变量（暗色/亮色主题色） ===== */
+:root {
+  /* ====== 背景 ====== */
+  --bg-primary: #f8f7fc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f0f0f2;
+  --bg-elevated: #ffffff;
+  --bg-input: #f9fafb;
+  --bg-input-dark: rgba(255,255,255,0.05);
+
+  /* 亮色渐变背景 */
+  --bg-gradient: linear-gradient(170deg, #fef7ff 0%, #f5f3ff 50%, #f8f7fc 100%);
+
+  /* hover 阴影 */
+  --shadow-hover: 0 4px 12px rgba(168, 85, 247, 0.12);
+
+  /* ====== 文字 ====== */
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-tertiary: #aeaeb2;
+  --text-muted: #9ca3af;
+
+  /* ====== 边框 & 阴影 ====== */
+  --border-color: rgba(0, 0, 0, 0.06);
+  --border-color-light: rgba(0, 0, 0, 0.04);
+  --hover-overlay: rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.1);
+
+  /* ====== 功能色 ====== */
+  --income-color: #30d158;
+  --income-bg: rgba(48, 209, 88, 0.1);
+  --expense-color: #ff453a;
+  --expense-bg: rgba(255, 69, 58, 0.1);
+  --accent-color: #a855f7;
+  --accent-bg: rgba(168, 85, 247, 0.1);
+  --accent-light: rgba(99, 102, 241, 0.08);
+  --accent-text-active: #4f46e5;
+  --warning-color: #ff9f0a;
+  --success-color: #30d158;
+  --danger-color: #ff453a;
+  --danger-bg: #fee2e2;
+  --brand-from: #f472b6;
+  --brand-to: #a855f7;
+  --brand-gradient: linear-gradient(135deg, #f472b6, #a855f7);
+
+  /* ====== 圆角 ====== */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-full: 50%;
+
+  /* ====== 布局常量 ====== */
+  --tabbar-height: 60px;
+  --header-height: 52px;
+  --traffic-light-width: 78px;
+  --safe-bottom: 0px;
+  --page-max-width: 480px;
+
+  /* ====== 表单/卡片通用 token ====== */
+  --card-bg: #fff;
+  --card-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  --input-bg: #f9fafb;
+  --input-radius: 12px;
+  --btn-radius: 12px;
+  --chip-inactive-bg: #f3f4f6;
+  --chip-inactive-text: #6b7280;
+  --switch-track: #d1d5db;
+  --switch-thumb: #fff;
+
+  /* ====== 状态色（任务/标签） ====== */
+  --status-purple: #a855f7;
+  --status-overdue: #ff453a;
+  --status-today: #ff9f0a;
+  --status-upcoming: #30d158;
+  --status-done: #8e8e93;
+}
+
+.dark {
+  --bg-primary: #111113;
+  --bg-secondary: #1c1c1e;
+  --bg-tertiary: #2c2c2e;
+  --bg-elevated: #2c2c2e;
+  --bg-input: rgba(255,255,255,0.05);
+  --bg-input-dark: rgba(255,255,255,0.05);
+
+  --text-primary: #f5f5f7;
+  --text-secondary: #98989d;
+  --text-tertiary: #636366;
+  --text-muted: #636366;
+
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-color-light: rgba(255, 255, 255, 0.06);
+  --hover-overlay: rgba(255, 255, 255, 0.03);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+
+  --income-color: #30d158;
+  --income-bg: rgba(48, 209, 88, 0.15);
+  --expense-color: #ff453a;
+  --expense-bg: rgba(255, 69, 58, 0.15);
+  --accent-color: #c084fc;
+  --accent-bg: rgba(192, 132, 252, 0.15);
+  --accent-light: rgba(99, 102, 241, 0.15);
+  --accent-text-active: #a5b4fc;
+  --warning-color: #ff9f0a;
+  --success-color: #30d158;
+  --danger-color: #ff453a;
+  --danger-bg: rgba(127, 29, 29, 0.5);
+  --card-bg: #1c1c1e;
+  --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --input-bg: rgba(255,255,255,0.05);
+  --chip-inactive-bg: rgba(255,255,255,0.06);
+  --chip-inactive-text: #98989d;
+  --switch-track: #3a3a3c;
+  --switch-thumb: #fff;
+
+  /* 状态色 */
+  --status-purple: #a855f7;
+  --status-overdue: #ff453a;
+  --status-today: #ff9f0a;
+  --status-upcoming: #30d158;
+  --status-done: #636366;
+
+  /* 暗色渐变背景 */
+  --bg-gradient: linear-gradient(170deg, #130f1a 0%, #111113 50%, #0d0a14 100%);
+
+  /* hover 阴影（暗色模式） */
+  --shadow-hover: 0 4px 12px rgba(168, 85, 247, 0.25);
+}
+
+/* ===== 确保根元素撑满 ===== */
+html, body, #app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: transparent;
+}
+
+/* ===== 滚动条美化 ===== */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.2);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.4);
+}
+
+/* ===== 自定义动画 ===== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes panelSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes panelSlideDown {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
+}
+@keyframes bounceIn {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.animate-fadeIn { animation: fadeIn 0.25s ease-out; }
+.animate-slideUp { animation: slideUp 0.3s ease-out; }
+.animate-slideDown { animation: slideDown 0.3s ease-out; }
+.animate-scaleIn { animation: scaleIn 0.25s ease-out; }
+
+/* ===== Wails 拖拽区域 ===== */
+.wails-drag {
+  --wails-draggable: drag;
+}
+.no-drag {
+  --wails-draggable: no-drag;
+}
+
+/* ===== 选中样式覆盖 ===== */
+::selection {
+  background: rgba(99, 102, 241, 0.2);
+  color: inherit;
+}
+
+/* ===== 输入框聚焦样式 ===== */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+}
+
+/* ===== 遮罩层动画 ===== */
+.overlay-enter-active { animation: overlayIn 0.25s ease-out; }
+.overlay-leave-active { animation: overlayIn 0.2s ease-in reverse; }
+
+/* ===== 面板弹出动画 ===== */
+.panel-enter-active { animation: panelSlideUp 0.35s cubic-bezier(0.32, 0.72, 0, 1); }
+.panel-leave-active { animation: panelSlideDown 0.25s cubic-bezier(0.32, 0.72, 0, 1); }
+
+/* ===== 页面切换动画 ===== */
+.page-enter-active { animation: fadeIn 0.2s ease-out; }
+.page-leave-active { animation: fadeIn 0.15s ease-in reverse; }
+
+/* ===== 布局关键：内容区域 ===== */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  transition: background 0.3s ease, color 0.3s ease;
+  border-radius: 10px;
+}
+
+.app-header {
+  height: var(--header-height);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px 0 0;
+  background: var(--bg-gradient);
+  z-index: 10;
+  transition: background 0.3s ease;
+}
+
+.app-main {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.app-tabbar {
+  height: var(--tabbar-height);
+  flex-shrink: 0;
+  z-index: 10;
+  position: relative;
+}
+
+/* ===== 页面容器 ===== */
+.page-container {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--bg-gradient);
+  -webkit-overflow-scrolling: touch;
+}
+
+.page-content {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px 20px 24px;
+}
