@@ -17,11 +17,8 @@ go.work
 # Dependency directories
 vendor/
 
-# Build directories
+# Build output (platform configs like darwin/windows are tracked)
 build/bin/
-build/darwin/
-build/windows/
-build/linux/
 
 # Frontend
 frontend/dist/

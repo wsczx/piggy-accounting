@@ -130,33 +130,37 @@ build-min: ## 🛠️  构建最小体积版本 (启用UPX压缩)
 		); \
 	fi
 
-build-release: build ## 🛠️  构建发布版 (同 build)
+build-release: ## 🛠️  构建发布版 (同 build)
+	@echo "$(BLUE)🧹 清理构建目录...$(NC)"
+	@rm -rf "$(BUILD_DIR)"
+	make source-dist
+	make build-mac
+	make build-win-min
+	@echo "$(BLUE)📦 构建完成，请查看 $(BUILD_DIR) 目录...$(NC)"
 
-build-debug: ## 🛠️  构建当前平台 Debug 版本
-	@echo "$(YELLOW)🔍 构建 Debug 版本 (带调试信息)...$(NC)"
-	$(WAILS) build \
-		-o "$(BINARY_NAME)" \
-		-debug \
-		-devtools \
-		-trimpath \
-		-clean \
-		-nosyncgomod
+# ============ 平台特定构建 ============
+.PHONY: build-mac build-mac-arm build-mac-amd build-win build-win-min build-linux
 
-build-fast: ## 🛠️  快速构建 (跳过前端构建和绑定生成)
-	@echo "$(BLUE)⚡ 快速构建 (跳过前端构建)...$(NC)"
+build-mac: ## 🛠️  构建 macOS (Apple Silicon, 默认)
+	@echo "$(BLUE)🍎 构建 macOS arm64 (Apple Silicon)...$(NC)"
 	$(WAILS) build \
-		-o "$(BINARY_NAME)" \
-		-s \
-		-skipbindings \
+		-platform "darwin/arm64" \
 		-ldflags "$(LDFLAGS)" \
 		-trimpath \
 		-nosyncgomod
+	@mv "$(BUILD_DIR)/$(BINARY_NAME).app" "$(BUILD_DIR)/$(BINARY_NAME)_mac_arm64.app"
+	@zip "$(BUILD_DIR)/$(BINARY_NAME)_macOS_ARM64.zip" "$(BUILD_DIR)/$(BINARY_NAME)_mac_arm64.app"
+	@rm -rf "$(BUILD_DIR)/$(BINARY_NAME)_mac_arm64.app"
 
-# ============ 平台特定构建 ============
-.PHONY: build-mac build-mac-arm build-mac-amd build-mac-universal build-win build-win64 build-win-min build-linux
-
-build-mac: build-mac-arm ## 🛠️  构建 macOS (Apple Silicon, 默认)
-	@echo "$(BLUE)🍎 构建 macOS (Apple Silicon)...$(NC)"
+	@echo "$(BLUE)🍎 构建 macOS amd64 (Intel)...$(NC)"
+	$(WAILS) build \
+		-platform "darwin/amd64" \
+		-ldflags "$(LDFLAGS)" \
+		-trimpath \
+		-nosyncgomod
+	@mv "$(BUILD_DIR)/$(BINARY_NAME).app" "$(BUILD_DIR)/$(BINARY_NAME)_mac_amd64.app"
+	@zip "$(BUILD_DIR)/$(BINARY_NAME)_macOS_AMD64.zip" "$(BUILD_DIR)/$(BINARY_NAME)_mac_amd64.app"
+	@rm -rf "$(BUILD_DIR)/$(BINARY_NAME)_mac_amd64.app"
 
 build-mac-arm: ## 🛠️  构建 macOS arm64 (Apple Silicon)
 	@echo "$(BLUE)🍎 构建 macOS arm64 (Apple Silicon)...$(NC)"
@@ -178,29 +182,6 @@ build-mac-amd: ## 🛠️  构建 macOS amd64 (Intel)
 		-clean \
 		-nosyncgomod
 
-build-mac-universal: ## 🛠️  构建 macOS Universal (arm64 + amd64)
-	@echo "$(BLUE)🍎 构建 macOS Universal 二进制文件...$(NC)"
-	@echo "$(YELLOW)  步骤 1: 构建 arm64...$(NC)"
-	$(WAILS) build \
-		-platform "darwin/arm64" \
-		-o "$(BINARY_NAME)_arm64" \
-		-ldflags "$(LDFLAGS)" \
-		-trimpath \
-		-nosyncgomod
-	@echo "$(YELLOW)  步骤 2: 构建 amd64...$(NC)"
-	$(WAILS) build \
-		-platform "darwin/amd64" \
-		-o "$(BINARY_NAME)_amd64" \
-		-ldflags "$(LDFLAGS)" \
-		-trimpath \
-		-nosyncgomod
-	@echo "$(YELLOW)  步骤 3: 合并为 Universal 二进制文件...$(NC)"
-	@lipo -create -output "$(BUILD_DIR)/$(BINARY_NAME)" \
-		"$(BUILD_DIR)/$(BINARY_NAME)_arm64" \
-		"$(BUILD_DIR)/$(BINARY_NAME)_amd64"
-	@rm -f "$(BUILD_DIR)/$(BINARY_NAME)_arm64" "$(BUILD_DIR)/$(BINARY_NAME)_amd64"
-	@echo "$(GREEN)✅ Universal 二进制文件构建完成: $(BUILD_DIR)/$(BINARY_NAME)$(NC)"
-
 build-win: build-win64 ## 🛠️  构建 Windows (amd64, 默认)
 
 build-win64: ## 🛠️  构建 Windows amd64
@@ -221,7 +202,6 @@ build-win-min: ## 🛠️  构建最小体积 Windows amd64 (启用UPX压缩)
 		-upx \
 		-ldflags "$(LDFLAGS)" \
 		-trimpath \
-		-clean \
 		-nosyncgomod || \
 	( \
 		echo "$(YELLOW)⚠️  UPX 压缩失败，使用未压缩版本...$(NC)"; \
@@ -231,7 +211,6 @@ build-win-min: ## 🛠️  构建最小体积 Windows amd64 (启用UPX压缩)
 			-o "$(BINARY_NAME).exe" \
 			-ldflags "$(LDFLAGS)" \
 			-trimpath \
-			-clean \
 			-nosyncgomod \
 	)
 
@@ -345,6 +324,15 @@ build-all-min: ## 🛠️  构建所有可交叉编译平台的最小化版本 (
 		echo ""; \
 		echo "$(YELLOW)⚠️  Linux 版本需要在 Linux 机器上单独构建 (Wails 不支持交叉编译)$(NC)"; \
 	fi
+
+# 生成源码压缩包
+source-dist: ## 🔧 生成源码压缩包 (zip 和 tar.gz)
+	@echo "$(BLUE)📦 生成源码压缩包...$(NC)"
+	@mkdir -p "$(BUILD_DIR)"
+	@zip "$(BUILD_DIR)/$(BINARY_NAME)-$(VERSION).zip" ./*
+	@tar -czf "$(BUILD_DIR)/$(BINARY_NAME)-$(VERSION).tar.gz" -C . .
+	@echo "$(GREEN)✅ 源码压缩包已生成:$(NC)" && \
+	ls -lh "$(BUILD_DIR)/$(BINARY_NAME)-$(VERSION)."{zip,tar.gz}
 
 # ============ 清理工具 ============
 .PHONY: clean clean-frontend clean-backend
