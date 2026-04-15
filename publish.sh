@@ -22,6 +22,7 @@ cd "$SCRIPT_DIR"
 GH_BIN="/usr/local/bin/gh"
 BUILD_DIR="build/bin"
 BINARY_NAME="猪猪记账"
+APP_NAME="piggy-accounting"
 WAILS_JSON="wails.json"
 REPO="wsczx/piggy-accounting"
 
@@ -68,9 +69,9 @@ collect_assets() {
 
     # 按优先级收集：zip > exe > tar.gz（跳过源码包）
     for f in \
-        "$BUILD_DIR/${BINARY_NAME}_macOS_ARM64.zip" \
-        "$BUILD_DIR/${BINARY_NAME}_macOS_AMD64.zip" \
-        "$BUILD_DIR/${BINARY_NAME}.exe"; do
+        "$BUILD_DIR/${APP_NAME}_macOS_ARM64.zip" \
+        "$BUILD_DIR/${APP_NAME}_macOS_AMD64.zip" \
+        "$BUILD_DIR/${APP_NAME}.exe"; do
         if [ -f "$f" ]; then
             ASSETS+=("$f")
         fi
@@ -117,9 +118,9 @@ generate_notes() {
     echo ""
     echo "| 文件 | 平台 |"
     echo "|------|------|"
-    echo "| \`${BINARY_NAME}_macOS_ARM64.zip\` | macOS Apple Silicon (M1/M2/M3) |"
-    echo "| \`${BINARY_NAME}_macOS_AMD64.zip\` | macOS Intel |"
-    echo "| \`${BINARY_NAME}.exe\` | Windows 64位 |"
+    echo "| \`${APP_NAME}_macOS_ARM64.zip\` | macOS Apple Silicon (M1/M2/M3) |"
+    echo "| \`${APP_NAME}_macOS_AMD64.zip\` | macOS Intel |"
+    echo "| \`${APP_NAME}.exe\` | Windows 64位 |"
 }
 
 # ============ 主流程 ============
